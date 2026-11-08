@@ -1,0 +1,29 @@
+type: web
+runtime:
+  name: python@3.13
+  health_path: /healthz
+  readiness_timeout_seconds: 120
+secrets:
+  DJANGO_SECRET_KEY: secret://generate:64
+  POSTGRES_PASSWORD: secret://generate:32
+resources:
+  db:
+    template: postgres:16
+    type: database
+    database: django
+    username: django
+    password: secret://POSTGRES_PASSWORD
+dependency_cmd: python -m pip install -r requirements.txt
+build_cmd: |
+  python manage.py collectstatic --noinput
+release_cmd: python manage.py migrate --noinput
+start_cmd: |
+  python -m gunicorn backend.wsgi:application --bind 0.0.0.0:${PORT:-8080} --workers ${GUNICORN_WORKERS:-2} --worker-class ${GUNICORN_WORKER_CLASS:-gevent}
+env:
+  PORT: "8080"
+  PYTHONUNBUFFERED: "1"
+  DJANGO_SETTINGS_MODULE: backend.settings
+  DJANGO_SECRET_KEY: secret://DJANGO_SECRET_KEY
+  DATABASE_URL: secret://DATABASE_URL
+  GUNICORN_WORKERS: "2"
+  GUNICORN_WORKER_CLASS: gevent

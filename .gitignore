@@ -1,0 +1,51 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.crt
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+
+# Dependencies
+node_modules/
+.pnp/
+.pnp.*
+vendor/
+.venv/
+venv/
+env/
+
+# Build output and caches
+.next/
+out/
+dist/
+build/
+coverage/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+__pycache__/
+*.py[cod]
+staticfiles/
+bin/
+obj/
+TestResults/
+*.tsbuildinfo
+next-env.d.ts
+
+# Runtime data
+data/
+tmp/
+*.pid
